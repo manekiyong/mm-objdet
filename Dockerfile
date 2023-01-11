@@ -1,19 +1,16 @@
 FROM nvcr.io/nvidia/pytorch:20.12-py3
 
-
+ENV DEBIAN_FRONTEND noninteractive
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y \
-    && apt-get -y install make
-
 ADD build /build
 WORKDIR /build
 RUN make
+
+RUN apt-get install -y --no-install-recommends ffmpeg
 
 ADD /src /src
 
